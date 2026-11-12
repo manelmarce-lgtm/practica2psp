@@ -5,6 +5,7 @@ import java.util.concurrent.Semaphore;
 public class CentralSoldadura {
     int estacions = 3;
     Semaphore semafor = new Semaphore(estacions,true);
+    Semaphore semaforFirma = new Semaphore(1,true);
     boolean ocupades[] = new boolean[estacions];
     public void soldar(int idRobot){
         int estacioAssignada = -1;
@@ -42,5 +43,23 @@ public class CentralSoldadura {
         ocupades[estacio] = false;
         System.out.println("Robot " + idRobot + " allibera estació " + estacio);
 
+    }
+
+    public void signarCertificat(int idRobot){
+        boolean estaOcupat = false;
+        try {
+            semaforFirma.acquire();
+            estaOcupat = true;
+            System.out.println("Robot "+ idRobot + " signant certificat");
+            Thread.sleep(1400);
+            System.out.println("Robot "+ idRobot + " ha signat el certificat");
+            
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            if(estaOcupat){
+                semaforFirma.release();
+            }
+        }
     }
 }
