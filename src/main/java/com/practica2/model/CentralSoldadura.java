@@ -45,6 +45,16 @@ public class CentralSoldadura {
 
     }
 
+    public synchronized int getEstacionsOcupades(){
+        int estacionsOcupades = 0;
+        for(boolean ocupada : ocupades){
+            if(ocupada){
+                estacionsOcupades++;
+            }
+        }
+        return estacionsOcupades;
+    }
+
     public void signarCertificat(int idRobot){
         boolean estaOcupat = false;
         try {

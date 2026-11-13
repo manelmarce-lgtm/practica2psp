@@ -46,4 +46,18 @@ public class CintaTransportadora {
         lock.unlock();
     }
  }
+ public int getCapacitatMax() {
+    return capacitatMax;
+ }
+
+ public int getQuantitatBateries() {
+    lock.lock();
+    try {
+        return coa.size();
+        
+    } finally {
+        lock.unlock();
+    }
+    
+ }
 }
