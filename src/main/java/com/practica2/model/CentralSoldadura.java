@@ -101,16 +101,20 @@ public class CentralSoldadura {
         }
         return false;
     }
-    public synchronized void realitzarManteniment() throws InterruptedException {
+    
+    public synchronized void esperarAvaria() throws InterruptedException{
         while(!cercadorAvaries()){
-           wait();
+            wait();
         }
+    }
+
+    public synchronized void finalitzarManteniment(){
         for(int i = 0; i < estacionsAvariades.length; i++){
             if(estacionsAvariades[i]){
                 estacionsAvariades[i] = false;
                 semafor.release();
                 break;
             }
-        } 
+        }
     }
 }
