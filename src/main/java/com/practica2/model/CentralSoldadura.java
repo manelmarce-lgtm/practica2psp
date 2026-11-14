@@ -10,6 +10,16 @@ public class CentralSoldadura {
     private boolean[] estacionsAvariades = new boolean[estacions];
 
 
+    public synchronized  int getEstacionsAvariades() {
+        int avariades = 0;
+        for (boolean avariada : estacionsAvariades) {
+            if (avariada) {
+                avariades++;
+            }
+        }
+        return avariades;
+    }
+
     public void soldar(int idRobot){
         int estacioAssignada = -1;
         try {
@@ -33,7 +43,7 @@ public class CentralSoldadura {
 
     private synchronized int ocuparEstacio(){
         for(int i = 0; i < ocupades.length; i++){
-            if(!ocupades[i]){
+            if(!ocupades[i] && !estacionsAvariades[i]){
                 ocupades[i] = true;
                 return i;
             }
