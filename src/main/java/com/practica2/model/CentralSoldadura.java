@@ -25,8 +25,7 @@ public class CentralSoldadura {
         try {
             semafor.acquire();
             estacioAssignada = ocuparEstacio();
-            System.out.println("Robot "+ idRobot + "Soldant a estació: " + estacioAssignada);
-            Thread.sleep(1000);
+            Thread.sleep(2000);
             
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -52,10 +51,7 @@ public class CentralSoldadura {
     }
 
     private synchronized void alliberarEstacio(int estacio, int idRobot){
-
         ocupades[estacio] = false;
-        System.out.println("Robot " + idRobot + " allibera estació " + estacio);
-
     }
 
     public synchronized int getEstacionsOcupades(){
@@ -73,9 +69,7 @@ public class CentralSoldadura {
         try {
             semaforFirma.acquire();
             estaOcupat = true;
-            System.out.println("Robot "+ idRobot + " signant certificat");
             Thread.sleep(1400);
-            System.out.println("Robot "+ idRobot + " ha signat el certificat");
             
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
