@@ -31,23 +31,23 @@ public class RobotTask implements Runnable{
         while(bateria < costEnergetic) {
             estat = "Agafant bateria";
             cintaTransportadora.agafarBateria();
-            bateria += 50;
+            bateria += 10;
         }
     }
     @Override
     public void run() {
       try {
-          assegurarBateria(10);  
+          assegurarBateria(50);  
           Thread.sleep(2000);
           estat = "Soldant";
           centralSoldadura.soldar(id);
-          bateria -= 10;
+          bateria -= 50;
           Thread.sleep(2000);
           
-          assegurarBateria(20);
+          assegurarBateria(50);
           estat= "Signant certificat";
           centralSoldadura.signarCertificat(id);
-          bateria -= 20;
+          bateria -= 50;
           Thread.sleep(2000);
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();

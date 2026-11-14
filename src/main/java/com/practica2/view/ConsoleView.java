@@ -39,7 +39,7 @@ public class ConsoleView implements Runnable {
     private void imprimirFuncionament(){
         System.out.println("ESTAT DE LA FÀBRICA");
         System.out.println("Cinta de transportadora: " + cintaTransportadora.getQuantitatBateries() + " bateries");
-        System.out.println("Central de soldadura: " + centralSoldadura.getEstacionsOcupades() + " ocupades" 
+        System.out.println("Central de soldadura: " + centralSoldadura.getEstacionsOcupades() + " ocupades " 
         + centralSoldadura.getEstacionsAvariades() + " avariades");
         System.out.println("--------------------------------------------");
         System.out.println("Sensor d'avaries: "+sensorAvariesTask.getEstat());
@@ -60,8 +60,9 @@ public class ConsoleView implements Runnable {
     public void run() {
         try {
             while(!Thread.currentThread().isInterrupted() && !totsFinalitzats()){
+                Thread.sleep(4000);
                 imprimirFuncionament();
-                Thread.sleep(1000);
+                
             }
             imprimirFuncionament(); 
         } catch (InterruptedException e) {
