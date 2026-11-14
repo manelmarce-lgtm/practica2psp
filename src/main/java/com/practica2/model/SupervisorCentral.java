@@ -9,11 +9,11 @@ public class SupervisorCentral {
         } 
     }
 
-    public synchronized  void PosarEstatAlerta() {
+    public synchronized  void posarEstatAlerta() {
         estatAlerta = true;
     }
 
-    public synchronized void LlevarEstatAlerta() {
+    public synchronized void llevarEstatAlerta() {
         estatAlerta = false;
         notifyAll();
     }

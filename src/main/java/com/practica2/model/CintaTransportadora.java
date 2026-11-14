@@ -20,7 +20,6 @@ public class CintaTransportadora {
             cintaNoPlena.await();
         }
             coa.add(nomBateria);
-            System.out.println("Bateria " + nomBateria + " carregada");
             cintaNoBuida.signal();
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
@@ -38,7 +37,6 @@ public class CintaTransportadora {
             cintaNoBuida.await();
         }
             String bateria = coa.remove(0);
-            System.out.println("Bateria " + bateria + " agafada");
             cintaNoPlena.signal();
     } catch (InterruptedException e) {
         Thread.currentThread().interrupt();

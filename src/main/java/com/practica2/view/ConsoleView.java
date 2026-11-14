@@ -64,7 +64,7 @@ public class ConsoleView implements Runnable {
     public void run() {
         try {
             while(!Thread.currentThread().isInterrupted() && !totsFinalitzats()){
-                Thread.sleep(4000);
+                Thread.sleep(2000);
                 imprimirFuncionament();
             }
             imprimirFuncionament(); 
