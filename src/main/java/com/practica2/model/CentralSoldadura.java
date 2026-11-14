@@ -7,6 +7,9 @@ public class CentralSoldadura {
     Semaphore semafor = new Semaphore(estacions,true);
     Semaphore semaforFirma = new Semaphore(1,true);
     boolean ocupades[] = new boolean[estacions];
+    private boolean[] estacionsAvariades = new boolean[estacions];
+
+
     public void soldar(int idRobot){
         int estacioAssignada = -1;
         try {
@@ -72,4 +75,16 @@ public class CentralSoldadura {
             }
         }
     }
+
+    public synchronized void crearAvaria() {
+        if(semafor.tryAcquire()){
+            for(int i = 0; i < ocupades.length; i++){
+                if(!ocupades[i] && !estacionsAvariades[i]){
+                   estacionsAvariades[i] = true;
+                   notifyAll();
+                   break;
+                }
+            }
+    }
+}
 }
