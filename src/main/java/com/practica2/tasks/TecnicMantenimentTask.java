@@ -19,9 +19,10 @@ public class TecnicMantenimentTask implements Runnable {
         while(!Thread.currentThread().isInterrupted()) {
             try {
                 estat = "Pendent de manteniment";
-                centralSoldadura.realitzarManteniment();
+                centralSoldadura.esperarAvaria();
                 estat = "Fent el manteniment";
-                Thread.sleep(1000);
+                Thread.sleep(2000);
+                centralSoldadura.finalitzarManteniment();
                 
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
