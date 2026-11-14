@@ -3,14 +3,10 @@ package com.practica2.model;
 public class SupervisorCentral {
     boolean estatAlerta = false;
     
-    public synchronized void VerificaEstat(int id) {
+    public synchronized void VerificaEstat(int id) throws InterruptedException {
     while( estatAlerta){
-        try {
             wait();
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-    }
+        } 
     }
 
     public synchronized  void PosarEstatAlerta() {
@@ -20,5 +16,9 @@ public class SupervisorCentral {
     public synchronized void LlevarEstatAlerta() {
         estatAlerta = false;
         notifyAll();
+    }
+
+    public synchronized boolean getEstatAlerta() {
+        return estatAlerta;
     }
 }
