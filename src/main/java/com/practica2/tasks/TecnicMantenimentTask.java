@@ -13,22 +13,21 @@ public class TecnicMantenimentTask implements Runnable {
     public String getEstat() {
         return estat;
     }
-    
+
     @Override
     public void run() {
-        while(!Thread.currentThread().isInterrupted()) {
+        while (!Thread.currentThread().isInterrupted()) {
             try {
                 estat = "Pendent de manteniment";
                 centralSoldadura.esperarAvaria();
                 estat = "Fent el manteniment";
                 Thread.sleep(2000);
                 centralSoldadura.finalitzarManteniment();
-                
+
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
+        }
     }
-}
-
 
 }

@@ -2,14 +2,14 @@ package com.practica2.model;
 
 public class SupervisorCentral {
     boolean estatAlerta = false;
-    
+
     public synchronized void VerificaEstat(int id) throws InterruptedException {
-    while( estatAlerta){
+        while (estatAlerta) {
             wait();
-        } 
+        }
     }
 
-    public synchronized  void posarEstatAlerta() {
+    public synchronized void posarEstatAlerta() {
         estatAlerta = true;
     }
 

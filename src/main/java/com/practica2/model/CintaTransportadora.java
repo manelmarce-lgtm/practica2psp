@@ -6,19 +6,19 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CintaTransportadora {
- List<String> coa = new LinkedList<>();
- int capacitatMax = 5;
+    List<String> coa = new LinkedList<>();
+    int capacitatMax = 5;
 
- private final ReentrantLock lock = new ReentrantLock();
- private final Condition cintaNoPlena = lock.newCondition();
- private final Condition cintaNoBuida = lock.newCondition();
+    private final ReentrantLock lock = new ReentrantLock();
+    private final Condition cintaNoPlena = lock.newCondition();
+    private final Condition cintaNoBuida = lock.newCondition();
 
- public void carregarBateries(String nomBateria) throws InterruptedException {
-    lock.lock();
-    try {
-        while (coa.size() == capacitatMax){
-            cintaNoPlena.await();
-        }
+    public void carregarBateries(String nomBateria) throws InterruptedException {
+        lock.lock();
+        try {
+            while (coa.size() == capacitatMax) {
+                cintaNoPlena.await();
+            }
             coa.add(nomBateria);
             cintaNoBuida.signal();
         } catch (InterruptedException ex) {
@@ -27,35 +27,35 @@ public class CintaTransportadora {
             lock.unlock();
         }
     }
- 
 
- public void agafarBateria(){
-    lock.lock();
-    try {
-        while(coa.isEmpty()){
-       
-            cintaNoBuida.await();
-        }
+    public void agafarBateria() {
+        lock.lock();
+        try {
+            while (coa.isEmpty()) {
+
+                cintaNoBuida.await();
+            }
             String bateria = coa.remove(0);
             cintaNoPlena.signal();
-    } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-    } finally {
-        lock.unlock();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            lock.unlock();
+        }
     }
- }
- public int getCapacitatMax() {
-    return capacitatMax;
- }
 
- public int getQuantitatBateries() {
-    lock.lock();
-    try {
-        return coa.size();
-        
-    } finally {
-        lock.unlock();
+    public int getCapacitatMax() {
+        return capacitatMax;
     }
-    
- }
+
+    public int getQuantitatBateries() {
+        lock.lock();
+        try {
+            return coa.size();
+
+        } finally {
+            lock.unlock();
+        }
+
+    }
 }

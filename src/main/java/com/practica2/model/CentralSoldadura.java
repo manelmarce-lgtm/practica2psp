@@ -4,13 +4,12 @@ import java.util.concurrent.Semaphore;
 
 public class CentralSoldadura {
     int estacions = 3;
-    Semaphore semafor = new Semaphore(estacions,true);
-    Semaphore semaforFirma = new Semaphore(1,true);
+    Semaphore semafor = new Semaphore(estacions, true);
+    Semaphore semaforFirma = new Semaphore(1, true);
     boolean ocupades[] = new boolean[estacions];
     private boolean[] estacionsAvariades = new boolean[estacions];
 
-
-    public synchronized  int getEstacionsAvariades() {
+    public synchronized int getEstacionsAvariades() {
         int avariades = 0;
         for (boolean avariada : estacionsAvariades) {
             if (avariada) {
@@ -20,29 +19,29 @@ public class CentralSoldadura {
         return avariades;
     }
 
-    public void soldar(int idRobot){
+    public void soldar(int idRobot) {
         int estacioAssignada = -1;
         try {
             semafor.acquire();
             estacioAssignada = ocuparEstacio();
             Thread.sleep(2000);
-            
+
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
 
         } finally {
 
-            if(estacioAssignada!= -1){
+            if (estacioAssignada != -1) {
                 alliberarEstacio(estacioAssignada, idRobot);
                 semafor.release();
             }
-            
+
         }
     }
 
-    private synchronized int ocuparEstacio(){
-        for(int i = 0; i < ocupades.length; i++){
-            if(!ocupades[i] && !estacionsAvariades[i]){
+    private synchronized int ocuparEstacio() {
+        for (int i = 0; i < ocupades.length; i++) {
+            if (!ocupades[i] && !estacionsAvariades[i]) {
                 ocupades[i] = true;
                 return i;
             }
@@ -50,67 +49,66 @@ public class CentralSoldadura {
         return -1;
     }
 
-    private synchronized void alliberarEstacio(int estacio, int idRobot){
+    private synchronized void alliberarEstacio(int estacio, int idRobot) {
         ocupades[estacio] = false;
     }
 
-    public synchronized int getEstacionsOcupades(){
+    public synchronized int getEstacionsOcupades() {
         int estacionsOcupades = 0;
-        for(boolean ocupada : ocupades){
-            if(ocupada){
+        for (boolean ocupada : ocupades) {
+            if (ocupada) {
                 estacionsOcupades++;
             }
         }
         return estacionsOcupades;
     }
 
-    public void signarCertificat(int idRobot){
+    public void signarCertificat(int idRobot) {
         boolean estaOcupat = false;
         try {
             semaforFirma.acquire();
             estaOcupat = true;
             Thread.sleep(1400);
-            
+
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {
-            if(estaOcupat){
+            if (estaOcupat) {
                 semaforFirma.release();
             }
         }
     }
 
     public synchronized void crearAvaria() {
-        if(semafor.tryAcquire()){
-            for(int i = 0; i < ocupades.length; i++){
-                if(!ocupades[i] && !estacionsAvariades[i]){
-                   estacionsAvariades[i] = true;
-                   notifyAll();
-                   break;
+        if (semafor.tryAcquire()) {
+            for (int i = 0; i < ocupades.length; i++) {
+                if (!ocupades[i] && !estacionsAvariades[i]) {
+                    estacionsAvariades[i] = true;
+                    notifyAll();
+                    break;
                 }
             }
+        }
     }
-}
 
-
-    private boolean cercadorAvaries(){
-        for(int i = 0; i < ocupades.length; i++){
-            if(estacionsAvariades[i]){
+    private boolean cercadorAvaries() {
+        for (int i = 0; i < ocupades.length; i++) {
+            if (estacionsAvariades[i]) {
                 return true;
-            }  
+            }
         }
         return false;
     }
-    
-    public synchronized void esperarAvaria() throws InterruptedException{
-        while(!cercadorAvaries()){
+
+    public synchronized void esperarAvaria() throws InterruptedException {
+        while (!cercadorAvaries()) {
             wait();
         }
     }
 
-    public synchronized void finalitzarManteniment(){
-        for(int i = 0; i < estacionsAvariades.length; i++){
-            if(estacionsAvariades[i]){
+    public synchronized void finalitzarManteniment() {
+        for (int i = 0; i < estacionsAvariades.length; i++) {
+            if (estacionsAvariades[i]) {
                 estacionsAvariades[i] = false;
                 semafor.release();
                 break;

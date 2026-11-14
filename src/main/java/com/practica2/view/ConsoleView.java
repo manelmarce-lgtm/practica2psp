@@ -11,15 +11,17 @@ import com.practica2.tasks.SensorAvariesTask;
 import com.practica2.tasks.TecnicMantenimentTask;
 
 public class ConsoleView implements Runnable {
-    private  final CintaTransportadora cintaTransportadora;
-    private  final CentralSoldadura centralSoldadura;
+    private final CintaTransportadora cintaTransportadora;
+    private final CentralSoldadura centralSoldadura;
     private final SupervisorCentral supervisorCentral;
     private final List<AGVTask> agvTasks;
     private final List<RobotTask> robotTasks;
     private final SensorAvariesTask sensorAvariesTask;
     private final TecnicMantenimentTask tecnicMantenimentTask;
 
-    public ConsoleView(CintaTransportadora cintaTransportadora, CentralSoldadura centralSoldadura, SupervisorCentral supervisorCentral, List<AGVTask> agvTasks, List<RobotTask> robotTasks, SensorAvariesTask sensorAvariesTask, TecnicMantenimentTask tecnicMantenimentTask) {
+    public ConsoleView(CintaTransportadora cintaTransportadora, CentralSoldadura centralSoldadura,
+            SupervisorCentral supervisorCentral, List<AGVTask> agvTasks, List<RobotTask> robotTasks,
+            SensorAvariesTask sensorAvariesTask, TecnicMantenimentTask tecnicMantenimentTask) {
         this.cintaTransportadora = cintaTransportadora;
         this.centralSoldadura = centralSoldadura;
         this.supervisorCentral = supervisorCentral;
@@ -29,33 +31,36 @@ public class ConsoleView implements Runnable {
         this.tecnicMantenimentTask = tecnicMantenimentTask;
     }
 
-    private boolean totsFinalitzats(){
-        for(RobotTask r: robotTasks){
-            if(!"Finalitzat".equals(r.getEstat())) return false;
+    private boolean totsFinalitzats() {
+        for (RobotTask r : robotTasks) {
+            if (!"Finalitzat".equals(r.getEstat()))
+                return false;
         }
-        for(AGVTask a: agvTasks){
-            if(!"Finalitzat".equals(a.getEstat())) return false;
+        for (AGVTask a : agvTasks) {
+            if (!"Finalitzat".equals(a.getEstat()))
+                return false;
         }
         return true;
     }
 
-    private void imprimirFuncionament(){
+    private void imprimirFuncionament() {
         System.out.println("ESTAT DE LA FÀBRICA");
-        System.out.println("Supervisor central: " + (supervisorCentral.getEstatAlerta() ? "ALERTA SOBREESCALFAMENT!" : "Normal"));
+        System.out.println(
+                "Supervisor central: " + (supervisorCentral.getEstatAlerta() ? "ALERTA SOBREESCALFAMENT!" : "Normal"));
         System.out.println("Cinta de transportadora: " + cintaTransportadora.getQuantitatBateries() + " bateries");
-        System.out.println("Central de soldadura: " + centralSoldadura.getEstacionsOcupades() + " ocupades " 
-        + centralSoldadura.getEstacionsAvariades() + " avariades");
+        System.out.println("Central de soldadura: " + centralSoldadura.getEstacionsOcupades() + " ocupades "
+                + centralSoldadura.getEstacionsAvariades() + " avariades");
         System.out.println("--------------------------------------------");
-        System.out.println("Sensor d'avaries: "+sensorAvariesTask.getEstat());
-        System.out.println("Tècnic de manteniment: "+tecnicMantenimentTask.getEstat());
+        System.out.println("Sensor d'avaries: " + sensorAvariesTask.getEstat());
+        System.out.println("Tècnic de manteniment: " + tecnicMantenimentTask.getEstat());
         System.out.println("--------------------------------------------");
 
-        for(AGVTask a: agvTasks){
+        for (AGVTask a : agvTasks) {
             System.out.println("AGV " + a.getId() + ": " + a.getEstat());
         }
-        for(RobotTask r: robotTasks){
+        for (RobotTask r : robotTasks) {
             System.out.println("Robot " + r.getId() + ": " + r.getEstat()
-        + " Bateria: " + r.getBateria() + " %");
+                    + " Bateria: " + r.getBateria() + " %");
         }
         System.out.println("--------------------------------------------");
     }
@@ -63,14 +68,14 @@ public class ConsoleView implements Runnable {
     @Override
     public void run() {
         try {
-            while(!Thread.currentThread().isInterrupted() && !totsFinalitzats()){
+            while (!Thread.currentThread().isInterrupted() && !totsFinalitzats()) {
                 Thread.sleep(2000);
                 imprimirFuncionament();
             }
-            imprimirFuncionament(); 
+            imprimirFuncionament();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
-    
+
 }
