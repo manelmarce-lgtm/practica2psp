@@ -13,14 +13,14 @@ public class CintaTransportadora {
  private final Condition cintaNoPlena = lock.newCondition();
  private final Condition cintaNoBuida = lock.newCondition();
 
- public void carregarBateries(String bateria) throws InterruptedException {
+ public void carregarBateries(String nomBateria) throws InterruptedException {
     lock.lock();
     try {
         while (coa.size() == capacitatMax){
             cintaNoPlena.await();
         }
-            coa.add(bateria);
-            System.out.println("Bateria " + bateria + " carregada");
+            coa.add(nomBateria);
+            System.out.println("Bateria " + nomBateria + " carregada");
             cintaNoBuida.signal();
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();

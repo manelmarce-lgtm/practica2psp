@@ -9,11 +9,13 @@ public class RobotTask implements Runnable{
     CentralSoldadura centralSoldadura;
     private volatile int bateria = 0;
     private volatile String estat = "Esperant";
+
     public RobotTask(int id, CintaTransportadora cintaTransportadora, CentralSoldadura centralSoldadura) {
         this.id = id;
         this.cintaTransportadora = cintaTransportadora;
         this.centralSoldadura = centralSoldadura;
     }
+    
     public int getBateria() {
         return bateria;
     }
