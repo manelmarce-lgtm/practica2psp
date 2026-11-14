@@ -87,4 +87,26 @@ public class CentralSoldadura {
             }
     }
 }
+
+
+    private boolean cercadorAvaries(){
+        for(int i = 0; i < ocupades.length; i++){
+            if(estacionsAvariades[i]){
+                return true;
+            }  
+        }
+        return false;
+    }
+    public synchronized void realitzarManteniment() throws InterruptedException {
+        while(!cercadorAvaries()){
+           wait();
+        }
+        for(int i = 0; i < estacionsAvariades.length; i++){
+            if(estacionsAvariades[i]){
+                estacionsAvariades[i] = false;
+                semafor.release();
+                break;
+            }
+        } 
+    }
 }
